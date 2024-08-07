@@ -852,6 +852,7 @@
 	display: block;
 	font-size: 13px;
 	margin: 0 3px;
+	border-radius: 10px;
 }
 .product_info {
 	text-align: center;
@@ -860,6 +861,11 @@
 	visibility: hidden;
     -webkit-transition: .3s;
     transition: .3s;
+}
+.product_info .product_detail {
+	background: #009483;
+    color: #fff;
+    border-color: #009483;
 }
 .single_product:hover .product_info{
     opacity: 1;

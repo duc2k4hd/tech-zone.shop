@@ -11,12 +11,12 @@
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css" integrity="sha512-Kc323vGBEqzTmouAECnVceyQqyqdsSiqLQISBL29aUW4U/M7pSPA/gEUZQqv1cwx4OnYxTxve5UMg5GT6L4JJg==" crossorigin="anonymous" referrerpolicy="no-referrer" />
 		
 		<!-- all css here -->
-        <link rel="stylesheet" href="{{ asset('assets/css/home/bootstrap.min.css') }}">
-        <link rel="stylesheet" href="{{ asset('assets/css/home/bundle.css') }}">
-        <link rel="stylesheet" href="{{ asset('assets/css/home/plugin.css') }}">
-        <link rel="stylesheet" href="{{ asset('assets/css/home/style.css') }}">
-        <link rel="stylesheet" href="{{ asset('assets/css/home/custom.css') }}">
-        <link rel="stylesheet" href="{{ asset('assets/css/home/responsive.css') }}">
+        <link rel="stylesheet" href="{{ asset('assets/css/client/home/bootstrap.min.css') }}">
+        <link rel="stylesheet" href="{{ asset('assets/css/client/home/bundle.css') }}">
+        <link rel="stylesheet" href="{{ asset('assets/css/client/home/plugin.css') }}">
+        <link rel="stylesheet" href="{{ asset('assets/css/client/home/style.css') }}">
+        <link rel="stylesheet" href="{{ asset('assets/css/client/home/custom.css') }}">
+        <link rel="stylesheet" href="{{ asset('assets/css/client/home/responsive.css') }}">
         <script src="{{ asset('assets/js/home/js/vendor/modernizr-2.8.3.min.js') }}"></script>
     </head>
     <body>
@@ -73,7 +73,7 @@
                                        <!--logo start-->
                                         <div class="col-lg-3 col-md-3">
                                             <div class="logo">
-                                                <a href="index.html"><img src="assets\img\logo\logo.jpg.png" alt=""></a>
+                                                <a href="index.html"><img src="assets/img/techzone/logo.png" alt=""></a>
                                             </div>
                                         </div>
                                         <!--logo end-->
@@ -86,45 +86,46 @@
                                                     </form>
                                                 </div>
                                                 <div class="shopping_cart">
-                                                    <a href="#"><i class="fa fa-shopping-cart"></i> <strong>3</strong> sản phẩm - 5.400.000đ <i class="fa fa-angle-down"></i></a>
+                                                    <a href="#"><i class="fa fa-shopping-cart"></i> <strong>{{ $carts->sum('quantity') }}</strong> sản phẩm - 
+                                                        @php
+                                                            $total = 0;
+                                                            foreach ($carts as $cart) {
+                                                                $total += $cart->price * $cart->quantity;
+                                                            }
+                                                            echo number_format($total, 0, ',', '.');
+                                                        @endphp
+                                                        <i class="fa fa-angle-down"></i></a>
                                                     <!--mini cart-->
                                                     <div class="mini_cart">
-                                                        <div class="cart_item">
-                                                           <div class="cart_img">
-                                                               <a href="#"><img src="assets\img\cart\cart.jpg" alt=""></a>
-                                                           </div>
-                                                            <div class="cart_info">
-                                                                <a href="#">lorem ipsum dolor</a>
-                                                                <span class="cart_price">$115.00</span>
-                                                                <span class="quantity">Qty: 1</span>
+                                                        @foreach ($carts as $cart)
+                                                            <div class="cart_item">
+                                                                <div class="cart_img">
+                                                                    <a href="#"><img src="{{ asset('assets/img/clothes/' . $cart->img_path) }}" alt=""></a>
+                                                                </div>
+                                                                <div class="cart_info">
+                                                                    <a href="#">{{ $cart->name }}</a>
+                                                                    <span class="cart_price">{{ number_format($cart->price, 0, ',', '.') }}</span>
+                                                                    <span class="quantity">Số lượng: {{ $cart->quantity }}</span>
+                                                                </div>
+                                                                <div class="cart_remove">
+                                                                    <form action="{{ route('home.cart.delete') }}" method="post">
+                                                                        @csrf
+                                                                        <input type="hidden" name="id" value="{{ $cart->cart_id }}">
+                                                                        <button type="submit"><i class="fa fa-times-circle"></i></button>
+                                                                    </form>
+                                                                </div>
                                                             </div>
-                                                            <div class="cart_remove">
-                                                                <a title="Remove this item" href="#"><i class="fa fa-times-circle"></i></a>
-                                                            </div>
-                                                        </div>
-                                                        <div class="cart_item">
-                                                           <div class="cart_img">
-                                                               <a href="#"><img src="assets\img\cart\cart2.jpg" alt=""></a>
-                                                           </div>
-                                                            <div class="cart_info">
-                                                                <a href="#">Quisque ornare dui</a>
-                                                                <span class="cart_price">$105.00</span>
-                                                                <span class="quantity">Qty: 1</span>
-                                                            </div>
-                                                            <div class="cart_remove">
-                                                                <a title="Remove this item" href="#"><i class="fa fa-times-circle"></i></a>
-                                                            </div>
-                                                        </div>
-                                                        <div class="shipping_price">
+                                                        @endforeach
+                                                        {{-- <div class="shipping_price">
                                                             <span> Shipping </span>
                                                             <span>  $7.00  </span>
-                                                        </div>
+                                                        </div> --}}
                                                         <div class="total_price">
-                                                            <span> total </span>
-                                                            <span class="prices">  $227.00  </span>
+                                                            <span> Tổng </span>
+                                                            <span class="prices">  {{ number_format($total, 0, ',', '.') }}  </span>
                                                         </div>
                                                         <div class="cart_button">
-                                                            <a href="checkout.html"> Check out</a>
+                                                            <a href="checkout.html"> Kiểm tra</a>
                                                         </div>
                                                     </div>
                                                     <!--mini cart end-->
@@ -476,119 +477,121 @@
             <!--footer area end-->
             
             @foreach ($products as $product)
-                <!-- modal area start --> 
-                <div class="modal fade" id="modal_box_{{ $product->id }}" tabindex="-1" role="dialog" aria-hidden="true">
-                    <div class="modal-dialog modal-dialog-centered" role="document">
-                        <div class="modal-content">
-                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                            <span aria-hidden="true">&times;</span>
-                            </button>
-                            <div class="modal_body">
-                                <div class="container">
-                                    <div class="row">
-                                        <div class="col-lg-5 col-md-5 col-sm-12">
-                                            <div class="modal_tab">  
-                                                <div class="tab-content" id="pills-tabContent">
-                                                    @php
-                                                        $count_1 = 1;
-                                                    @endphp
-                                                    <div class="tab-pane fade show active" id="tab0" role="tabpanel">
-                                                        <div class="modal_tab_img">
-                                                            <a href="#"><img src="assets/img/{{ $product->image_path }}" alt=""></a>    
-                                                        </div>
-                                                    </div>
-                                                    @foreach (is_array(json_decode($product->image_array)) ? json_decode($product->image_array) : [] as $img)
-                                                        <div class="tab-pane fade" id="tab{{ $count_1 += 1 }}" role="tabpanel">
+                <form action="{{ route('home.cart.add') }}" method="post">
+                    @csrf
+                    <!-- modal area start --> 
+                    <div class="modal fade" id="modal_box_{{ $product->id }}" tabindex="-1" role="dialog" aria-hidden="true">
+                        <div class="modal-dialog modal-dialog-centered" role="document">
+                            <div class="modal-content">
+                                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                <span aria-hidden="true">&times;</span>
+                                </button>
+                                <div class="modal_body">
+                                    <div class="container">
+                                        <div class="row">
+                                            <div class="col-lg-5 col-md-5 col-sm-12">
+                                                <div class="modal_tab">  
+                                                   <div class="tab-content" id="pills-tabContent">
+                                                        @php
+                                                            $count_1 = 1;
+                                                        @endphp
+                                                        <div class="tab-pane fade show active" id="tab0" role="tabpanel">
                                                             <div class="modal_tab_img">
-                                                                <a href="#"><img src="assets/img/{{ $img }}" alt=""></a>    
+                                                                <a href="#"><img src="assets/img/{{ $product->image_path }}" alt=""></a>    
                                                             </div>
                                                         </div>
-                                                    @endforeach
-                                                    
-                                                </div>
-                                                <div class="modal_tab_button">
-                                                    <ul class="nav product_navactive" role="tablist">
-                                                        @php
-                                                            $count_2 = 1;
-                                                        @endphp
-                                                        <li>
-                                                            <a class="nav-link active" data-toggle="tab" href="#tab0" role="tab" aria-controls="tab" aria-selected="false"><img src="assets/img/{{ $product->image_path }}" alt=""></a>
-                                                        </li>
                                                         @foreach (is_array(json_decode($product->image_array)) ? json_decode($product->image_array) : [] as $img)
-                                                            <li>
-                                                                <a class="nav-link" data-toggle="tab" href="#tab{{ $count_2 += 1 }}" role="tab" aria-controls="tab{{ $count_2 }}" aria-selected="false"><img src="assets/img/{{ $img }}" alt=""></a>
-                                                            </li>
+                                                            <div class="tab-pane fade" id="tab{{ $count_1 += 1 }}" role="tabpanel">
+                                                                <div class="modal_tab_img">
+                                                                    <a href="#"><img src="assets/img/{{ $img }}" alt=""></a>    
+                                                                </div>
+                                                            </div>
                                                         @endforeach
+                                                        
+                                                    </div>
+                                                    <div class="modal_tab_button">
+                                                        <ul class="nav product_navactive" role="tablist">
+                                                            @php
+                                                                $count_2 = 1;
+                                                            @endphp
+                                                            <li>
+                                                                <a class="nav-link active" data-toggle="tab" href="#tab0" role="tab" aria-controls="tab" aria-selected="false"><img src="assets/img/{{ $product->image_path }}" alt=""></a>
+                                                            </li>
+                                                            @foreach (is_array(json_decode($product->img_arr)) ? json_decode($product->img_arr) : [] as $img)
+                                                                <li>
+                                                                    <a class="nav-link" data-toggle="tab" href="#tab{{ $count_2 += 1 }}" role="tab" aria-controls="tab{{ $count_2 }}" aria-selected="false"><img src="assets/img/{{ $img }}" alt=""></a>
+                                                                </li>
+                                                            @endforeach
 
-                                                    </ul>
-                                                </div>    
-                                            </div>  
-                                        </div> 
-                                        <div class="col-lg-7 col-md-7 col-sm-12">
-                                            <div class="modal_right">
-                                                <div class="modal_title mb-10">
-                                                    <h2>{{ $product->name }}</h2> 
-                                                </div>
-                                                <div class="modal_price mb-10">
-                                                    <span class="new_price">{{ number_format($product->discounted_price, 0, ',', '.') }}đ</span>    
-                                                    <span class="old_price">{{ number_format($product->price, 0, ',', '.') }}đ</span>    
-                                                </div>
-                                                <div class="modal_content mb-10">
-                                                    <p>Mã sản phẩm: {{ $product->code }}</p>
-                                                </div>
-                                                <div class="modal_size mb-15">
-                                                <h2>size</h2>
-                                                <ul>
-                                                    <li>
-                                                        <select name="size" id="">
-                                                            <option value="">Chọn size</option>
-                                                            @foreach (json_decode($product->size) as $size)
-                                                                <option value="{{ $size }}">{{ $size }}</option>
-                                                            @endforeach
-                                                        </select>
-                                                    </li>
-                                                </ul>
-                                                <h2>Màu sắc</h2>
-                                                <ul>
-                                                    <li>
-                                                        <select name="size" id="">
-                                                            <option value="">Chọn màu sắc</option>
-                                                            @foreach (json_decode($product->color) as $color)
-                                                                <option value="{{ $color }}">{{ $color }}</option>
-                                                            @endforeach
-                                                        </select>
-                                                    </li>
-                                                </ul>
-                                                </div>
-                                                <div class="modal_description mb-15">
-                                                    <p>{{ $product->description }}</p>    
-                                                </div> 
-                                                <div class="modal_add_to_cart mb-15">
-                                                    <form action="#">
-                                                        <input min="0" max="100" step="2" value="1" type="number">
-                                                        <button type="submit">Thêm vào giỏ hàng</button>
-                                                    </form>
-                                                </div> 
-                                                {{-- <div class="modal_social">
-                                                    <h2>Share this product</h2>
+                                                        </ul>
+                                                    </div>    
+                                                </div>  
+                                            </div> 
+                                            <div class="col-lg-7 col-md-7 col-sm-12">
+                                                <div class="modal_right">
+                                                    <div class="modal_title mb-10">
+                                                        <h2>{{ $product->name }}</h2> 
+                                                    </div>
+                                                    <div class="modal_price mb-10">
+                                                        <span class="new_price">{{ number_format($product->discounted_price, 0, ',', '.') }}đ</span>    
+                                                        <span class="old_price">{{ number_format($product->price, 0, ',', '.') }}đ</span>    
+                                                    </div>
+                                                    <div class="modal_content mb-10">
+                                                        <p>Mã sản phẩm: {{ $product->code }}</p>
+                                                    </div>
+                                                    <div class="modal_size mb-15">
+                                                    <h2>size</h2>
                                                     <ul>
-                                                        <li><a href="#"><i class="fa fa-facebook"></i></a></li>
-                                                        <li><a href="#"><i class="fa fa-twitter"></i></a></li>
-                                                        <li><a href="#"><i class="fa fa-pinterest"></i></a></li>
-                                                        <li><a href="#"><i class="fa fa-google-plus"></i></a></li>
-                                                        <li><a href="#"><i class="fa fa-linkedin"></i></a></li>
-                                                    </ul>    
-                                                </div>       --}}
+                                                        <li>
+                                                            <select name="product_size" id="">
+                                                                <option value="">Chọn size</option>
+                                                                @foreach (json_decode($product->size) as $size)
+                                                                    <option value="{{ $size }}">{{ $size }}</option>
+                                                                @endforeach
+                                                            </select>
+                                                        </li>
+                                                    </ul>
+                                                    <h2>Màu sắc</h2>
+                                                    <ul>
+                                                        <li>
+                                                            <select name="product_color" id="">
+                                                                <option value="">Chọn màu sắc</option>
+                                                                @foreach (json_decode($product->color) as $color)
+                                                                    <option value="{{ $color }}">{{ $color }}</option>
+                                                                @endforeach
+                                                            </select>
+                                                        </li>
+                                                    </ul>
+                                                    </div>
+                                                    <div class="modal_description mb-15">
+                                                        <p>{{ $product->description }}</p>    
+                                                    </div> 
+                                                    <div class="modal_add_to_cart mb-15 d-flex align-items-center">
+                                                        <input type="hidden" name="product_id" value="{{ $product->id }}">
+                                                        <input min="1" max="{{ $product->stock }}" value="1" type="number" name="product_quantity">
+                                                        <button type="submit" class="btn btn-primary">Thêm vào giỏ hàng</button>
+                                                    </div> 
+                                                    {{-- <div class="modal_social">
+                                                        <h2>Share this product</h2>
+                                                        <ul>
+                                                            <li><a href="#"><i class="fa fa-facebook"></i></a></li>
+                                                            <li><a href="#"><i class="fa fa-twitter"></i></a></li>
+                                                            <li><a href="#"><i class="fa fa-pinterest"></i></a></li>
+                                                            <li><a href="#"><i class="fa fa-google-plus"></i></a></li>
+                                                            <li><a href="#"><i class="fa fa-linkedin"></i></a></li>
+                                                        </ul>    
+                                                    </div>       --}}
+                                                </div>    
                                             </div>    
-                                        </div>    
-                                    </div>     
-                                </div>
-                            </div>    
+                                        </div>     
+                                    </div>
+                                </div>    
+                            </div>
                         </div>
-                    </div>
-                </div> 
-                
-                <!-- modal area end --> 
+                    </div> 
+                    
+                    <!-- modal area end --> 
+                </form>
             @endforeach
             
             
@@ -596,23 +599,21 @@
         <script type="text/javascript" async>
             @if(Session::has('error'))
                 Swal.fire({
-                    title: 'Thông báo!',
-                    position: "top-end",
-                    icon: "error",
+                    title: "Thông báo!",
                     text: "{{ Session::get('error') }}",
-                    showConfirmButton: true,
-                    timer: 1500
-                });
+                    icon: "error",
+                    showConfirmButton: false,
+                    timer: 2000
+                })
             @elseif(Session::has('success'))
                 Swal.fire({
-                    title: 'Thông báo!',
-                    position: "top-end",
-                    icon: "success"
+                    title: "Thông báo!",
                     text: "{{ Session::get('success') }}",
-                    showConfirmButton: true,
-                    timer: 1500
-                });
-            @else
+                    icon: "success",
+                    showConfirmButton: false,
+                    timer: 2000
+                })
+            @else()
                 Swal.fire({
                     title: 'Loading...',
                     text: 'Vui không chờ!',
@@ -621,22 +622,19 @@
                         Swal.showLoading();
                     }
                 })
-                // setTimeout(() => {
-                //     Swal.close();
-                // }, 500);
-                window.onload = function() {
+                setTimeout(() => {
                     Swal.close();
-                }
+                }, 500);
             @endif
         </script>
 		
 		<!-- all js here -->
-        <script src="{{ asset('assets/js/vendor/jquery-1.12.0.min.js') }}"></script>
-        <script src="{{ asset('assets/js/popper.js') }}"></script>
-        <script src="{{ asset('assets/js/bootstrap.min.js') }}"></script>
-        <script src="{{ asset('assets/js/ajax-mail.js') }}"></script>
-        <script src="{{ asset('assets/js/plugins.js') }}"></script>
-        <script src="{{ asset('assets/js/main.js') }}"></script>
+        <script src="{{ asset('assets/js/client/vendor/jquery-1.12.0.min.js') }}"></script>
+        <script src="{{ asset('assets/js/client/popper.js') }}"></script>
+        <script src="{{ asset('assets/js/client/bootstrap.min.js') }}"></script>
+        <script src="{{ asset('assets/js/client/ajax-mail.js') }}"></script>
+        <script src="{{ asset('assets/js/client/plugins.js') }}"></script>
+        <script src="{{ asset('assets/js/client/main.js') }}"></script>
 
         @yield('script')
     </body>

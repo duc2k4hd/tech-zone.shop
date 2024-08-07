@@ -85,12 +85,16 @@
                                     <div class="col-lg-3">
                                         <div class="single_product">
                                             <div class="product_thumb">
-                                                <a href=""><img width="200" height="350" src="assets\img\{{ $product->image_path }}" alt=""></a> 
+                                                <a href=""><img width="200" height="350" src="{{ asset('assets/img/'. $product->image_path) }}" alt=""></a> 
                                             <div class="img_icone">
-                                                <img src="assets\img\cart\span-new.png" alt="">
+                                                <img src="assets/img/cart/span-new.png" alt="">
                                             </div>
                                             <div class="product_action">
-                                                <a href="#"> <i class="fa fa-shopping-cart"></i> Thêm vào giỏ hàng</a>
+                                                @if ($product->stock > 0)
+                                                    <a href="#" data-toggle="modal" data-target="#modal_box_{{ $product->id }}" title="Thêm vào giỏ hàng"> <i class="fa fa-shopping-cart"></i> Thêm vào giỏ hàng</a>
+                                                @else
+                                                    <button class="btn btn-danger" disabled title=" Hết hàng ">Hết hàng</button>
+                                                @endif
                                             </div>
                                             </div>
                                             <div class="product_content">
@@ -98,10 +102,16 @@
                                                 <h3 class="product_title"><a href="single-product.html">{{ $product->name }}</a></h3>
                                             </div>
                                             <div class="product_info">
-                                                <ul>
-                                                    <li><a href="#" title=" Thêm vào yêu thích ">Yêu thích</a></li>
-                                                    <li><a href="#" data-toggle="modal" data-target="#modal_box_{{ $product->id }}" title=" Xem chi tiết ">Chi tiết</a></li>
-                                                </ul>
+                                                @if ($product->stock > 0)
+                                                    <ul>
+                                                        <li><a href="#" title=" Thêm vào yêu thích ">Yêu thích</a></li>
+                                                        <li><a class="product_detail" href="#" title=" Xem chi tiết ">Chi tiết</a></li>
+                                                    </ul>
+                                                @else
+                                                    <ul>
+                                                        <li><button class="btn btn-danger" disabled title=" Hết hàng ">Hết hàng</button></li>
+                                                    </ul>
+                                                @endif
                                             </div>
                                         </div>
                                     </div>

@@ -13,7 +13,6 @@ class DashboardController extends Controller {
     public function index() {
         if (Auth::check()) {
             return view('admin.dashboard.dashboard', [
-                'baseUrl' => env("BASE_URL") .'resources/views/admin/dashboard/',
                 'user' => User::find(Auth::id())
             ]);
         } else {

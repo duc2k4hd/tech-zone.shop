@@ -18,7 +18,7 @@
                         <div class="col-lg-4 col-md-6">
                             <div class="single_product">
                                 <div class="product_thumb">
-                                <a href="single-product.html"><img src="{{ asset('assets/img/'. $product->image_path) }}" alt=""></a> 
+                                <a href="single-product.html"><img width="250" height="350" src="{{ asset('assets/img/'. $product->image_path) }}" alt=""></a> 
                                 @if ($product->stock <= 0)
                                     <div class="img_icone">
                                         <img src="assets\img\cart\span-out.png" alt="">
@@ -37,10 +37,16 @@
                                     <h3 class="product_title"><a href="single-product.html">{{ $product->name }}</a></h3>
                                 </div>
                                 <div class="product_info">
-                                    <ul>
-                                        <li><a href="#" title=" Thêm vào yêu thích ">Yêu thích</a></li>
-                                        <li><a href="#" data-toggle="modal" data-target="#modal_box_{{ $product->id }}" title=" Xem chi tiết ">Chi tiết</a></li>
-                                    </ul>
+                                    @if ($product->stock > 0)
+                                        <ul>
+                                            <li><a href="#" title=" Thêm vào yêu thích ">Yêu thích</a></li>
+                                            <li><a href="#" data-toggle="modal" data-target="#modal_box_{{ $product->id }}" title=" Xem chi tiết ">Chi tiết</a></li>
+                                        </ul>
+                                    @else
+                                        <ul>
+                                            <li><a href="#" title=" Hết hàng ">Hết hàng</a></li>
+                                        </ul>
+                                    @endif
                                 </div>
                             </div>
                         </div>

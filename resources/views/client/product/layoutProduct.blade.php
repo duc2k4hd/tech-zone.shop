@@ -12,12 +12,12 @@
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css" integrity="sha512-Kc323vGBEqzTmouAECnVceyQqyqdsSiqLQISBL29aUW4U/M7pSPA/gEUZQqv1cwx4OnYxTxve5UMg5GT6L4JJg==" crossorigin="anonymous" referrerpolicy="no-referrer" />
 		
 		<!-- all css here -->
-        <link rel="stylesheet" href="{{ asset('assets/css/home/bootstrap.min.css') }}">
-        <link rel="stylesheet" href="{{ asset('assets/css/home/bundle.css') }}">
-        <link rel="stylesheet" href="{{ asset('assets/css/home/plugin.css') }}">
-        <link rel="stylesheet" href="{{ asset('assets/css/home/style.css') }}">
-        <link rel="stylesheet" href="{{ asset('assets/css/home/responsive.css') }}">
-        <script src="{{ asset('assets/js/home/js/vendor/modernizr-2.8.3.min.js') }}"></script>
+        <link rel="stylesheet" href="{{ asset('assets/css/client/home/bootstrap.min.css') }}">
+        <link rel="stylesheet" href="{{ asset('assets/css/client/home/bundle.css') }}">
+        <link rel="stylesheet" href="{{ asset('assets/css/client/home/plugin.css') }}">
+        <link rel="stylesheet" href="{{ asset('assets/css/client/home/style.css') }}">
+        <link rel="stylesheet" href="{{ asset('assets/css/client/home/responsive.css') }}">
+        <script src="{{ asset('assets/js/client/vendor/modernizr-2.8.3.min.js') }}"></script>
     </head>
     <body>
             <!-- Add your site or application content here -->
@@ -821,12 +821,12 @@
         </script>
 		
 		<!-- all js here -->
-        <script src="{{ asset('assets/js/vendor/jquery-1.12.0.min.js') }}"></script>
-        <script src="{{ asset('assets/js/popper.js') }}"></script>
-        <script src="{{ asset('assets/js/bootstrap.min.js') }}"></script>
-        <script src="{{ asset('assets/js/ajax-mail.js') }}"></script>
-        <script src="{{ asset('assets/js/plugins.js') }}"></script>
-        <script src="{{ asset('assets/js/main.js') }}"></script>
+        <script src="{{ asset('assets/js/client/vendor/jquery-1.12.0.min.js') }}"></script>
+        <script src="{{ asset('assets/js/client/popper.js') }}"></script>
+        <script src="{{ asset('assets/js/client/bootstrap.min.js') }}"></script>
+        <script src="{{ asset('assets/js/client/ajax-mail.js') }}"></script>
+        <script src="{{ asset('assets/js/client/plugins.js') }}"></script>
+        <script src="{{ asset('assets/js/client/main.js') }}"></script>
 
         @yield('script')
     </body>

@@ -51,13 +51,13 @@
                                         <tr class="text-center">
                                             <td>
                                                 <label class="cl-checkbox">
-                                                    <input class="checkbox-cart" type="checkbox" value="{{ $cart->price * $cart->quantity }}-{{ $cart->name }}">
+                                                    <input class="checkbox-cart" type="checkbox" value="{{ $cart->discounted_price * $cart->quantity }}-{{ $cart->name }}">
                                                     <span></span>
                                                 </label>
                                             </td>
-                                            <td><a href="#"><img width="60" height="70" src="{{ asset('assets/img/'. $cart->image_path) }}" alt=""></a></td>
+                                            <td><a href="#"><img width="60" height="70" src="{{ asset('assets/img/'. $cart->img_path) }}" alt=""></a></td>
                                             <td><a class="product-name" href="#">{{ $cart->name }}</a></td>
-                                            <td class="fs-2 text-primary fw-bolder">{{ number_format($cart->price, 0, ',', '.') }}đ</td>
+                                            <td class="fs-2 text-primary fw-bolder">{{ number_format($cart->discounted_price, 0, ',', '.') }}đ</td>
                                             <td><input  value="{{ $cart->quantity }}" type="number" name="quantity"></td>
                                             <td>
                                                 <select name="size" id="">
@@ -79,7 +79,7 @@
                                                     @endforeach
                                                 </select>
                                             </td>
-                                            <td class="fs-2 text-primary fw-bold"><span class="product-price">{{ number_format($cart->price * $cart->quantity, 0, ',', '.') }}</span>đ</td>
+                                            <td class="fs-2 text-primary fw-bold"><span class="product-price">{{ number_format($cart->discounted_price * $cart->quantity, 0, ',', '.') }}</span>đ</td>
                                             <td><input class="btn btn-primary btn-rounded" type="submit" value="Cập nhật"></td>
                                             <td><a class="btn btn-danger" href="">Xóa</a></td>
                                         </tr>
@@ -134,7 +134,7 @@
                                 <hr>
                                 <div class="cart_subtotal">
                                     <p style="font-size: 25px">Tổng thanh toán</p>
-                                    <p class="cart_total">0</p>
+                                    <p class="cart_total text-danger fs-1">0</p>
                                     <input hidden class="total_hidden" value="0" type="text" name="subtotal" id="">
                                 </div>
                                 <div class="checkout_btn">
